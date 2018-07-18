@@ -1,0 +1,33 @@
+<!-- formタグを宣言し、対応するFormGroupを渡す -->
+<form [formGroup]="formGroup">
+  <!-- 親コンポーンネントに直接記載したフォーム -->
+  <!-- formControlNameから自動でFormGroup内が検索され、FormControlが紐付けられる-->
+  名前: <input [formControlName]="'name'" [ngModel]="''"><br>
+
+  <!-- 子コンポーンネントで記載したフォーム -->
+  <app-children1 [formGroup]="formGroup"></app-children1>
+  住所: <br>
+
+  <!-- 親コンポーンネントで直接記載したフォームの配列 -->
+  <ng-container *ngFor="let address of addresses; let index = index;" [formArrayName]="'addresses'">
+    &nbsp;&nbsp;{{ address }}: <br>
+    <ng-container [formGroupName]="index">
+      &nbsp;&nbsp;&nbsp;&nbsp;都道府県: <input [formControlName]="'prefecture'" [ngModel]="''">
+      &nbsp;&nbsp;&nbsp;&nbsp;市区町村: <input [formControlName]="'city'" [ngModel]="''">
+      <br>
+    </ng-container>
+  </ng-container>
+
+  <!-- 子コンポーンネントで記載したフォームの配列 -->
+  電話番号: <br>
+  <ng-container *ngFor="let phone_number of phone_numbers; let index = index;">
+    &nbsp;&nbsp;{{ phone_number }}<br>
+    <app-children2 [formArray]="getFormArrayOfString( 'phone_numbers' )"></app-children2>
+  </ng-container>
+</form>
+
+<br>
+formGroup.value | json <br>
+<pre>
+{{ formGroup.value | json }}
+</pre>
