@@ -28,8 +28,11 @@ export class ParentComponent {
     } );
 
     // addControl で氏名のコントロールを追加
-    // option, validatorは必要があれば入力
-    this.formGroup.addControl( 'name', new FormControl( '', [ /* validator */ ] ) );
+    // validatorは必要があれば入力
+    this.formGroup.addControl( 'name', new FormControl(
+      '' /* 初期値を設定する。もしくは { value: '初期値', disabled: true } の様にも書ける */,
+      [ /* validator */ ] )
+    );
 
     // 年齢のコントロールを追加
     // validatorに 0 ~ 100 までの値を入力する様にvalidationルールを設定する
@@ -59,7 +62,10 @@ export class ParentComponent {
       }
 
       // 値が範囲ないに収まっていることを確認する
-      const message = ( ( value >= min ) && ( value <= max) ) ? null : min + '~' + max + 'の値を入力してください。';
+      if ( ( value >= min ) && ( value <= max) ) {
+        return null;
+      }
+      const message = min + '~' + max + 'の値を入力してください。';
       return { outOfRange: message };
     };
   }
@@ -68,5 +74,5 @@ export class ParentComponent {
   public getFormArrayOfString = ( str: string ): FormArray => {
     // ( FormGroup.getはAbstractControlを返すので、as句を使ってダウンキャスとする )
     return ( this.formGroup.get( str ) as FormArray );
-  };
+  }
 }

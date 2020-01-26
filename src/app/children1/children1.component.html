@@ -1,3 +1,4 @@
 <form [formGroup]="formGroup">
   年齢: <input [formControlName]="'age'" type="number">
+  Validation: {{ formGroup.get( 'age' ).valid }}
 </form>
