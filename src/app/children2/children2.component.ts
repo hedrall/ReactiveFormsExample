@@ -17,8 +17,8 @@ export class Children2Component implements OnInit {
     this.childFormGroup = this.formBuilder.group({});
 
     // FormGroupにコントロールをセットして行く
-    this.childFormGroup.addControl( 'phone_number1', new FormControl( {}, [] ) );
-    this.childFormGroup.addControl( 'phone_number2', new FormControl( {}, [] ) );
+    this.childFormGroup.addControl( 'phone_number1', new FormControl( '', [] ) );
+    this.childFormGroup.addControl( 'phone_number2', new FormControl( '', [] ) );
 
     // 親コンポーネントのフォームに追加する
     this.formArray.push( this.childFormGroup );

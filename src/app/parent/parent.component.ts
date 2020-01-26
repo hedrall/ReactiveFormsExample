@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import { AbstractControl, FormArray, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-parent',
@@ -29,11 +29,11 @@ export class ParentComponent {
 
     // addControl で氏名のコントロールを追加
     // option, validatorは必要があれば入力
-    this.formGroup.addControl( 'name', new FormControl( { value: '' /* option */ }, [ /* validator */ ] ) );
+    this.formGroup.addControl( 'name', new FormControl( '', [ /* validator */ ] ) );
 
     // 年齢のコントロールを追加
     // validatorに 0 ~ 100 までの値を入力する様にvalidationルールを設定する
-    this.formGroup.addControl( 'age', new FormControl( {},
+    this.formGroup.addControl( 'age', new FormControl( '',
       [ this.range(0, 100) ] // validatorに関しては[おまけ]を参照
     ) );
 
@@ -41,8 +41,8 @@ export class ParentComponent {
     this.addresses.map( () => {
       const child_form_group = this.formBuilder.group({});
       // formGroupにコントロールをセット
-      child_form_group.addControl( 'prefecture', new FormControl( {}, [] ) );
-      child_form_group.addControl( 'city', new FormControl( {}, [] ) );
+      child_form_group.addControl( 'prefecture', new FormControl( '', [] ) );
+      child_form_group.addControl( 'city', new FormControl( '', [] ) );
       // formGroupのaddresses(FormArray)に生成した子コンポーネントを追加する
       // ( FormGroup.getはAbstractControlを返すので、as句を使ってダウンキャスとする )
       ( this.formGroup.get( 'addresses' ) as FormArray ).push( child_form_group );
@@ -50,8 +50,8 @@ export class ParentComponent {
   }
 
   // 範囲を確認するValidator
-  public range = ( min: number, max: number ): Function => {
-    return  ( control: AbstractControl ): null | string => {
+  public range = ( min: number, max: number ): ValidatorFn => {
+    return  ( control: AbstractControl ): { outOfRange: any } => {
       const value = control.value;
       // valueがセットされていない時はエラーなし
       if ( value === null || value === undefined ) {
@@ -59,9 +59,10 @@ export class ParentComponent {
       }
 
       // 値が範囲ないに収まっていることを確認する
-      return ( ( value >= min ) && ( value <= max) ) ? null : min + '~' + max + 'の値を入力してください。';
+      const message = ( ( value >= min ) && ( value <= max) ) ? null : min + '~' + max + 'の値を入力してください。';
+      return { outOfRange: message };
     };
-  };
+  }
 
   // formGroupからstrをキーとするFormArrayを返す
   public getFormArrayOfString = ( str: string ): FormArray => {

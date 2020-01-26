@@ -2,7 +2,7 @@
 <form [formGroup]="formGroup">
   <!-- 親コンポーンネントに直接記載したフォーム -->
   <!-- formControlNameから自動でFormGroup内が検索され、FormControlが紐付けられる-->
-  名前: <input [formControlName]="'name'" [ngModel]="''"><br>
+  名前: <input [formControlName]="'name'"><br>
 
   <!-- 子コンポーンネントで記載したフォーム -->
   <app-children1 [formGroup]="formGroup"></app-children1>
@@ -12,8 +12,8 @@
   <ng-container *ngFor="let address of addresses; let index = index;" [formArrayName]="'addresses'">
     &nbsp;&nbsp;{{ address }}: <br>
     <ng-container [formGroupName]="index">
-      &nbsp;&nbsp;&nbsp;&nbsp;都道府県: <input [formControlName]="'prefecture'" [ngModel]="''">
-      &nbsp;&nbsp;&nbsp;&nbsp;市区町村: <input [formControlName]="'city'" [ngModel]="''">
+      &nbsp;&nbsp;&nbsp;&nbsp;都道府県: <input [formControlName]="'prefecture'">
+      &nbsp;&nbsp;&nbsp;&nbsp;市区町村: <input [formControlName]="'city'">
       <br>
     </ng-container>
   </ng-container>
